@@ -1,0 +1,30 @@
+{
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "C/C++: g++-9 build active file",
+      "command": "/usr/lib/ccache/g++-9",
+      "args": [
+        "-g",
+        "${file}",
+        "-std=c++2a",
+        "-Wall",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}"
+        
+      ],
+      "options": {
+        "cwd": "/usr/lib/ccache"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Generated task by Debugger"
+    }
+  ],
+  "version": "2.0.0"
+}
