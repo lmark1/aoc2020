@@ -30,16 +30,14 @@ int part2(const std::string &input) {
   int total_sum = 0;
   int group_size = 0;
 
-  const auto increase_sum = [&](const auto &el) {
-    if (el.second == group_size) {
-      total_sum++;
-    }
+  const auto everone_agrees = [&](const auto &el) {
+    return el.second == group_size;
   };
 
   for (const auto &line : lines) {
 
     if (line.empty()) {
-      std::for_each(group_q.begin(), group_q.end(), increase_sum);
+      total_sum += std::count_if(group_q.begin(), group_q.end(), everone_agrees);
       group_size = 0;
       group_q.clear();
       continue;
@@ -52,7 +50,7 @@ int part2(const std::string &input) {
     });
   }
 
-  std::for_each(group_q.begin(), group_q.end(), increase_sum);
+  total_sum += std::count_if(group_q.begin(), group_q.end(), everone_agrees);
   return total_sum;
 }
 
