@@ -50,7 +50,18 @@
     "__tuple": "cpp",
     "ios": "cpp",
     "locale": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "vector": "cpp",
+    "__hash_table": "cpp",
+    "__split_buffer": "cpp",
+    "__tree": "cpp",
+    "map": "cpp",
+    "set": "cpp"
   },
 
   "clang-tidy.compilerArgs": ["-std=c++2a"]
