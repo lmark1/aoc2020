@@ -10,8 +10,8 @@ int part1(const std::string &input, int preamble_size) {
                                       numbers.begin() + i);
     std::sort(sorted_preamble.begin(), sorted_preamble.end());
     auto val = *(numbers.begin() + i);
-    if (!preamble_contains<long>(sorted_preamble.begin(), sorted_preamble.end(),
-                                 val)) {
+    if (!preamble_contains(sorted_preamble.begin(), sorted_preamble.end(),
+                           val)) {
       return val;
     }
   }
