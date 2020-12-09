@@ -8,6 +8,10 @@
 
 namespace aoc_util {
 
+const auto get_long = [](const auto &el) { return std::stol(el); };
+const auto get_llong = [](const auto &el) { return std::stol(el); };
+const auto get_int = [](const auto &el) { return std::stoi(el); };
+
 template<typename T, typename F>
 std::vector<T> get_numbers(const std::vector<std::string>& lines, F& f)
 {
