@@ -4,8 +4,18 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 namespace aoc_util {
+
+template<typename T, typename F>
+std::vector<T> get_numbers(const std::vector<std::string>& lines, F& f)
+{
+  std::vector<T> numbers;
+  std::transform(lines.begin(), lines.end(), std::back_inserter(numbers),
+                 [&](const auto &el) { return f(el); });
+  return numbers;
+}
 
 std::vector<std::string> getLines(const std::string &input_file) {
   std::ifstream file(input_file);
