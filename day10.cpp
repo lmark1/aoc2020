@@ -40,9 +40,6 @@ int arrangement_count(const std::vector<int> &numbers,
 
 long long smart_arrangement_count(std::vector<int> &numbers) {
   long long count = 1;
-  std::vector<int> adapter_set;
-  adapter_set.emplace_back(0);
-  int last = -1;
   numbers.insert(numbers.begin(), 0);
   for (int i = 0; i < numbers.size(); i++) {
     auto curr_number = numbers.at(i);
@@ -62,27 +59,23 @@ long long smart_arrangement_count(std::vector<int> &numbers) {
     long long valid_subsets = 0;
     for (const auto &subset : subsets) {
 
+      const auto subset_lower_bound = subset.front();
+      const auto subset_upper_bound = subset.back();
+
       // Case where there is a 0 subset
-      if (adapter_set.front() == 0 && subset.front() != 0) {
+      if (adapter_set.front() == 0 && subset_lower_bound != 0) {
         continue;
       }
 
       // Lower bound check
-      if (i - 1 >= 0) {
-        auto lower_bound = numbers.at(i - 1);
-        auto subset_lower = subset.front();
-        if (subset_lower - lower_bound > 3) {
-          continue;
-        }
+      if (i - 1 >= 0 && subset_lower_bound - numbers.at(i - 1) > 3) {
+        continue;
       }
 
       // Upper bound check
-      if (i + invalid_size < numbers.size()) {
-        auto upper_bound = numbers.at(i + invalid_size);
-        auto subset_upper = subset.back();
-        if (upper_bound - subset_upper > 3) {
-          continue;
-        }
+      if (i + invalid_size < numbers.size() &&
+          numbers.at(i + invalid_size) - subset_upper_bound > 3) {
+        continue;
       }
 
       // The subset is valid
@@ -108,6 +101,6 @@ int main() {
   std::cout << "[part1] solution: " << part1("input10_3.txt") << "\n";
   std::cout << "[part2] test solution 1: " << part2("input10_1.txt") << "\n";
   std::cout << "[part2] test solution 2: " << part2("input10_2.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input10_3.txt")  << "\n";
+  std::cout << "[part2] solution: " << part2("input10_3.txt") << "\n";
   return 0;
 }
