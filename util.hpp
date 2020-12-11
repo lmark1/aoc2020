@@ -7,12 +7,41 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <thread>
 
 namespace aoc_util {
+
+template<typename T>
+void sleep(T time)
+{
+  std::this_thread::sleep_for(time);
+}
+
+void ClearScreen()
+{
+  std::cout << std::string( 100, '\n' );
+}
+
 
 const auto get_long = [](const auto &el) { return std::stol(el); };
 const auto get_llong = [](const auto &el) { return std::stol(el); };
 const auto get_int = [](const auto &el) { return std::stoi(el); };
+
+template<typename T>
+using matrix = std::vector<std::vector<T>>;
+
+matrix<char> get_matrix(const std::vector<std::string>& lines)
+{
+  matrix<char> m;
+  for (int i = 0; i < lines.size(); i++) {
+    auto line = lines.at(i);
+    m.emplace_back();
+    for (int j = 0; j < line.size(); j++) {
+      m[i].emplace_back(line.at(j));
+    }
+  }
+  return m;
+}
 
 template <typename T, typename F>
 std::vector<T> get_numbers(const std::vector<std::string> &lines, F &f) {
@@ -49,7 +78,7 @@ std::vector<std::vector<T>> get_subsets(const std::vector<T> &set) {
   return res;
 }
 
-std::vector<std::string> getLines(const std::string &input_file) {
+std::vector<std::string> get_lines(const std::string &input_file) {
   std::ifstream file(input_file);
   std::string str;
   std::vector<std::string> lines;

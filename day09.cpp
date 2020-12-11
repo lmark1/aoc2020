@@ -1,8 +1,32 @@
-#include "templates.hpp"
 #include "util.hpp"
 
+template <typename T, typename It>
+bool preamble_contains(It begin, It end, T val) {
+  end--;
+  while (begin != end) {
+
+    auto res = *begin + *end;
+  
+    if (res == val) {
+      return true;
+    }
+
+    if (res < val) {
+      begin++;
+      continue;
+    }
+
+    if (res > val) {
+      end--;
+      continue;
+    }
+  }
+
+  return false;
+}
+
 int part1(const std::string &input, int preamble_size) {
-  auto numbers = aoc_util::get_numbers<long>(aoc_util::getLines(input),
+  auto numbers = aoc_util::get_numbers<long>(aoc_util::get_lines(input),
                                              aoc_util::get_long);
 
   for (int i = preamble_size; i < numbers.size(); i++) {
@@ -20,7 +44,7 @@ int part1(const std::string &input, int preamble_size) {
 
 long long part2(const std::string &input, int preamble_size) {
   auto invalid_number = part1(input, preamble_size);
-  auto numbers = aoc_util::get_numbers<long long>(aoc_util::getLines(input),
+  auto numbers = aoc_util::get_numbers<long long>(aoc_util::get_lines(input),
                                                   aoc_util::get_llong);
   std::size_t start_index = 0;
   std::size_t end_index = 0;

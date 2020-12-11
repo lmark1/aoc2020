@@ -3,7 +3,7 @@
 
 int part1(const std::string& input)
 {
-   auto lines = aoc_util::getLines(input);
+   auto lines = aoc_util::get_lines(input);
    aoc_util::opcode o;
    o.parse(lines);
    return o.run().result;
@@ -25,7 +25,7 @@ bool toggle_line(std::string& line)
 
 int part2(const std::string& input)
 {
-  auto lines = aoc_util::getLines(input);
+  auto lines = aoc_util::get_lines(input);
   aoc_util::opcode o;
 
   for(auto& line : lines)

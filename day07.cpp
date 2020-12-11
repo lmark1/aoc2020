@@ -67,7 +67,7 @@ bag_tuples bag_parser(const std::string &line) {
 }
 
 int part1(const std::string &input) {
-  auto lines = aoc_util::getLines(input);
+  auto lines = aoc_util::get_lines(input);
   bag_map_t bag_map;
 
   for (const auto &line : lines) {
@@ -91,7 +91,7 @@ int part1(const std::string &input) {
 }
 
 int part2(const std::string &input) {
-  auto lines = aoc_util::getLines(input);
+  auto lines = aoc_util::get_lines(input);
   bag_map_t bag_map;
 
   // Build bag map

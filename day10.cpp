@@ -2,7 +2,7 @@
 
 int part1(const std::string &input) {
   auto numbers =
-      aoc_util::get_numbers<int>(aoc_util::getLines(input), aoc_util::get_int);
+      aoc_util::get_numbers<int>(aoc_util::get_lines(input), aoc_util::get_int);
   std::sort(numbers.begin(), numbers.end());
   int diff_three = 0;
   int diff_one = 0;
@@ -90,7 +90,7 @@ long long smart_arrangement_count(std::vector<int> &numbers) {
 
 long long part2(const std::string &input) {
   auto numbers =
-      aoc_util::get_numbers<int>(aoc_util::getLines(input), aoc_util::get_int);
+      aoc_util::get_numbers<int>(aoc_util::get_lines(input), aoc_util::get_int);
   std::sort(numbers.begin(), numbers.end());
   return smart_arrangement_count(numbers);
 }

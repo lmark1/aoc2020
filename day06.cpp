@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 int part1(const std::string &input) {
-  auto lines = aoc_util::getLines(input);
+  auto lines = aoc_util::get_lines(input);
   int total_sum = 0;
   std::unordered_set<char> group_q;
 
@@ -25,7 +25,7 @@ int part1(const std::string &input) {
 }
 
 int part2(const std::string &input) {
-  auto lines = aoc_util::getLines(input);
+  auto lines = aoc_util::get_lines(input);
   std::unordered_map<char, int> group_q;
   int total_sum = 0;
   int group_size = 0;
