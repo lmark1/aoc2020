@@ -116,8 +116,16 @@ struct ship {
     });
     waypoint_fmap.emplace('R', [&](const auto &command) {
       auto copy_waypoint = waypoint;
-      const auto cos_command = command / 90 == 1 ? 0 : -1;
-      const auto sin_command = command / 90 == 1 ? 1 : 0;
+      int cos_command = 0;
+      int sin_command = 1;
+      auto div = command / 90;
+      if (div == 2) {
+        cos_command = -1;
+        sin_command = 0;
+      } else if (div == 3) {
+        cos_command = 0;
+        sin_command = -1;
+      }
       waypoint[0] =
           cos_command * copy_waypoint[0] + sin_command * copy_waypoint[1];
       waypoint[1] =
@@ -125,10 +133,20 @@ struct ship {
     });
     waypoint_fmap.emplace('L', [&](const auto &command) {
       auto copy_waypoint = waypoint;
-      const auto cos_command = command / 90 == 1 ? 0 : -1;
-      const auto sin_command = command / 90 == 1 ? -1 : 0;
-      waypoint[0] = cos_command * copy_waypoint[0] + sin_command * copy_waypoint[1];
-      waypoint[1] = - sin_command * copy_waypoint[0] + cos_command * copy_waypoint[1];
+      int cos_command = 0;
+      int sin_command = -1;
+      auto div = command / 90;
+      if (div == 2) {
+        cos_command = -1;
+        sin_command = 0;
+      } else if (div == 3) {
+        cos_command = 0;
+        sin_command = 1;
+      }
+      waypoint[0] =
+          cos_command * copy_waypoint[0] + sin_command * copy_waypoint[1];
+      waypoint[1] =
+          -sin_command * copy_waypoint[0] + cos_command * copy_waypoint[1];
     });
   }
 
@@ -146,9 +164,8 @@ struct ship {
     waypoint_fmap[c](val);
     // std::cout << c << " " << val << "\n";
     // std::cout << "Ship [" << position[0] << ", " << position[1] << "]\n";
-    // std::cout << "Waypoint [" << waypoint[0] << ", " << waypoint[1] << "]\n\n";
-    // std::string b;
-    // getline(std::cin, b);
+    // std::cout << "Waypoint [" << waypoint[0] << ", " << waypoint[1] <<
+    // "]\n\n"; std::string b; getline(std::cin, b);
   }
 };
 
