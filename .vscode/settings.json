@@ -61,7 +61,15 @@
     "__split_buffer": "cpp",
     "__tree": "cpp",
     "map": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "iomanip": "cpp",
+    "cinttypes": "cpp",
+    "optional": "cpp",
+    "ratio": "cpp",
+    "sstream": "cpp",
+    "thread": "cpp",
+    "__string": "cpp",
+    "queue": "cpp"
   },
 
   "clang-tidy.compilerArgs": ["-std=c++2a"]
