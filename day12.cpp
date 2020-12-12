@@ -116,16 +116,9 @@ struct ship {
     });
     waypoint_fmap.emplace('R', [&](const auto &command) {
       auto copy_waypoint = waypoint;
-      int cos_command = 0;
-      int sin_command = 1;
-      auto div = command / 90;
-      if (div == 2) {
-        cos_command = -1;
-        sin_command = 0;
-      } else if (div == 3) {
-        cos_command = 0;
-        sin_command = -1;
-      }
+      auto rad_c = command * M_PI / 180.0;
+      int cos_command = cos(rad_c);
+      int sin_command = sin(rad_c);
       waypoint[0] =
           cos_command * copy_waypoint[0] + sin_command * copy_waypoint[1];
       waypoint[1] =
@@ -133,16 +126,9 @@ struct ship {
     });
     waypoint_fmap.emplace('L', [&](const auto &command) {
       auto copy_waypoint = waypoint;
-      int cos_command = 0;
-      int sin_command = -1;
-      auto div = command / 90;
-      if (div == 2) {
-        cos_command = -1;
-        sin_command = 0;
-      } else if (div == 3) {
-        cos_command = 0;
-        sin_command = 1;
-      }
+      auto rad_c = - command * M_PI / 180.0;
+      int cos_command = cos(rad_c);
+      int sin_command = sin(rad_c);
       waypoint[0] =
           cos_command * copy_waypoint[0] + sin_command * copy_waypoint[1];
       waypoint[1] =
@@ -153,9 +139,7 @@ struct ship {
   void apply_command(const std::string &command) {
     auto c = command.at(0);
     auto val = std::stoi(command.substr(1, command.size() - 1));
-    // std::cout << c << " " << val << "\n";
     function_map[c](val);
-    // std::cout << "[" << position[0] << ", " << position[1] << "]\n";
   }
 
   void apply_waypoint_command(const std::string &command) {
@@ -164,8 +148,9 @@ struct ship {
     waypoint_fmap[c](val);
     // std::cout << c << " " << val << "\n";
     // std::cout << "Ship [" << position[0] << ", " << position[1] << "]\n";
-    // std::cout << "Waypoint [" << waypoint[0] << ", " << waypoint[1] <<
-    // "]\n\n"; std::string b; getline(std::cin, b);
+    // std::cout << "Waypoint [" << waypoint[0] << ", " << waypoint[1] << "]\n\n";
+    // std::string b;
+    // getline(std::cin, b);
   }
 };
 
@@ -192,5 +177,6 @@ int main() {
   std::cout << "[part1] solution: " << part1("input12_2.txt") << "\n";
   std::cout << "[part2] test solution: " << part2("input12_1.txt") << "\n";
   std::cout << "[part2] solution: " << part2("input12_2.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input12_3.txt") << "\n";
   return 0;
 }
