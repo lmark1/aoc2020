@@ -1,15 +1,15 @@
 #include "util.hpp"
 #include <bitset>
 #include <boost/algorithm/string.hpp>
+#include <unordered_map>
 
 struct Computer {
   std::string bitmask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-  std::vector<unsigned long long> memory;
+  std::unordered_map<unsigned long long, unsigned long long> memory_map;
   std::vector<std::string> bitmasks;
 
   template <bool adress_switching>
   void apply_command(const std::string &command, const std::string &argument) {
-    // std::cout << "Command: " << command << ", Arg: " << argument << "\n";
 
     if (command == "mask") {
       bitmask = argument;
@@ -20,14 +20,10 @@ struct Computer {
       std::vector<std::string> cmd_vec;
       boost::split(cmd_vec, command, boost::is_any_of("[]"));
       std::size_t index = std::stoll(cmd_vec.at(1));
-      if (memory.size() < index + 1) {
-        memory.resize(index + 1);
-      }
       if constexpr (adress_switching) {
         apply_adress_bitmask(argument, index);
       } else {
-        memory[index] = apply_bitmask(argument, bitmask);
-        // std::cout << "mem[" << index << "] = " << memory[index] << "\n";
+        memory_map[index] = apply_bitmask(argument, bitmask);
       }
       return;
     }
@@ -36,8 +32,6 @@ struct Computer {
   void apply_adress_bitmask(const std::string &arg,
                             const std::size_t memory_index) {
     auto memory_mask = apply_bitmask_p2(memory_index, bitmask);
-    // std::cout << "\nBitmask: \n" << bitmask << "\n";
-    // std::cout << "\nMemory: \n" << memory_mask << "\n";
 
     std::vector<int> x_indices;
     for (int i = 0; i < memory_mask.size(); i++) {
@@ -47,14 +41,6 @@ struct Computer {
     }
     std::vector<std::vector<int>> combinations =
         aoc_util::get_subsets(x_indices);
-    // for (const auto &subset : combinations) {
-    //   std::cout << "Subset: ";
-    //   for (const auto &el : subset) {
-    //     std::cout << el << " ";
-    //   }
-    //   std::cout << "\n";
-    // }
-
     bitmasks.clear();
     std::string initial_mask = memory_mask;
     for (auto &el : initial_mask) {
@@ -72,15 +58,9 @@ struct Computer {
       bitmasks.push_back(bitmask_copy);
     }
 
-    //std::cout << "Bitmasks: \n";
     for (const auto &bitmask : bitmasks) {
-      // std::cout << bitmask << "\n";
       auto memory_index = std::bitset<36>(bitmask).to_ullong();
-      if (memory.size() < memory_index + 1) {
-        memory.resize(memory_index + 1);
-      }
-      // std::cout << "Memory Index: " << memory_index << "\n";
-      memory[memory_index] = std::stoll(arg);
+      memory_map[memory_index] = std::stoll(arg);
     }
   }
 
@@ -136,8 +116,8 @@ struct Computer {
 
   unsigned long long sum() {
     unsigned long long res = 0;
-    for (const auto &ull : memory) {
-      res += ull;
+    for (const auto &el : memory_map) {
+      res += el.second;
     }
     return res;
   }
