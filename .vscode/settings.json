@@ -72,5 +72,7 @@
     "queue": "cpp"
   },
 
-  "clang-tidy.compilerArgs": ["-std=c++2a"]
+  "clang-tidy.compilerArgs": [
+    "-std=c++2a"
+  ]
 }
