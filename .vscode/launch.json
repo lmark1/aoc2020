@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "g++-9 - Build and debug active file",
+      "name": "g++-9 - build and run",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "program": "${fileDirname}/build/${fileBasenameNoExtension}",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -22,8 +22,30 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "My Build Task",
+      "preLaunchTask": "build-release",
       "miDebuggerPath": "/usr/bin/gdb"
-    }
+    },
+    {
+      "name": "g++-9 - build and debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/build/${fileBasenameNoExtension}",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build-debug",
+      "miDebuggerPath": "/usr/bin/gdb"
+    },
+    
   ]
 }
