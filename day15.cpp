@@ -1,5 +1,6 @@
 #include "util.hpp"
 #include <boost/algorithm/string.hpp>
+#include <memory_resource>
 #include <unordered_map>
 
 using ll_t = long long;
@@ -25,7 +26,9 @@ struct number_info {
 };
 
 ll_t part1(const std::string &input, ll_t max_turn) {
-  std::unordered_map<ll_t, number_info> number_info_map;
+  std::byte buffer[1000000];
+  std::pmr::monotonic_buffer_resource rsrc(buffer, sizeof buffer);
+  std::pmr::unordered_map<ll_t, number_info> number_info_map(&rsrc);
   auto numbers = parse_input(input);
   ll_t turn = 1LL;
 
@@ -61,38 +64,24 @@ ll_t part1(const std::string &input, ll_t max_turn) {
   return last_number;
 }
 
+// clang-format off
 int main() {
-  std::cout << "[part1] test solution 1: " << part1("input15_1.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 2: " << part1("input15_2.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 3: " << part1("input15_3.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 4: " << part1("input15_4.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 5: " << part1("input15_5.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 6: " << part1("input15_6.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] test solution 7: " << part1("input15_7.txt", 2020LL)
-            << "\n";
-  std::cout << "[part1] solution: " << part1("input15_8.txt", 2020LL) << "\n\n";
+  std::cout << "[part1] test solution 1: " << part1("input15_1.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 2: " << part1("input15_2.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 3: " << part1("input15_3.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 4: " << part1("input15_4.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 5: " << part1("input15_5.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 6: " << part1("input15_6.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 7: " << part1("input15_7.txt", 2020) << "\n";
+  std::cout << "[part1] solution: " << part1("input15_8.txt", 2020) << "\n\n";
 
-  std::cout << "[part2] test solution 1: " << part1("input15_1.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 2: " << part1("input15_2.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 3: " << part1("input15_3.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 4: " << part1("input15_4.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 5: " << part1("input15_5.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 6: " << part1("input15_6.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] test solution 7: " << part1("input15_7.txt", 30000000LL)
-            << "\n";
-  std::cout << "[part2] solution: " << part1("input15_8.txt", 30000000LL)
-            << "\n";
+  std::cout << "[part2] test solution 1: " << part1("input15_1.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 2: " << part1("input15_2.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 3: " << part1("input15_3.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 4: " << part1("input15_4.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 5: " << part1("input15_5.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 6: " << part1("input15_6.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 7: " << part1("input15_7.txt", 30000000) << "\n";
+  std::cout << "[part2] solution: " << part1("input15_8.txt", 30000000) << "\n";
   return 0;
 }
