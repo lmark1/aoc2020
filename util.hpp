@@ -33,10 +33,10 @@ using matrix = std::vector<std::vector<T>>;
 matrix<char> get_matrix(const std::vector<std::string>& lines)
 {
   matrix<char> m;
-  for (int i = 0; i < lines.size(); i++) {
+  for (std::size_t i = 0; i < lines.size(); i++) {
     auto line = lines.at(i);
     m.emplace_back();
-    for (int j = 0; j < line.size(); j++) {
+    for (std::size_t j = 0; j < line.size(); j++) {
       m[i].emplace_back(line.at(j));
     }
   }
