@@ -74,8 +74,8 @@ long long part2(const std::string &input, int preamble_size) {
 }
 
 int main() {
-  std::cout << "[part1] test solution: " << part1("input09_1.txt", 5) << "\n";
-  std::cout << "[part1] solution: " << part1("input09_2.txt", 25) << "\n";
-  std::cout << "[part2] test solution: " << part2("input09_1.txt", 5) << "\n";
-  std::cout << "[part2] solution: " << part2("input09_2.txt", 25) << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input09_1.txt", 5) << "\n";
+  std::cout << "[part1] solution: " << part1("input/input09_2.txt", 25) << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input09_1.txt", 5) << "\n";
+  std::cout << "[part2] solution: " << part2("input/input09_2.txt", 25) << "\n";
 }

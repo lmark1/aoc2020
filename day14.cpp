@@ -144,9 +144,9 @@ unsigned long long part2(const std::string &input) {
 }
 
 int main() {
-  std::cout << "[part1] test solution: " << part1("input14_1.txt") << "\n";
-  std::cout << "[part1] solution: " << part1("input14_2.txt") << "\n";
-  std::cout << "[part2] test solution: " << part2("input14_3.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input14_2.txt") << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input14_1.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input14_2.txt") << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input14_3.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input14_2.txt") << "\n";
   return 0;
 }

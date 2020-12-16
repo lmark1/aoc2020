@@ -173,10 +173,10 @@ int part2(const std::string &input) {
 }
 
 int main() {
-  std::cout << "[part1] test solution: " << part1("input12_1.txt") << "\n";
-  std::cout << "[part1] solution: " << part1("input12_2.txt") << "\n";
-  std::cout << "[part2] test solution: " << part2("input12_1.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input12_2.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input12_3.txt") << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input12_1.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input12_2.txt") << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input12_1.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input12_2.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input12_3.txt") << "\n";
   return 0;
 }

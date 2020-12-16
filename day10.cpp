@@ -96,11 +96,11 @@ long long part2(const std::string &input) {
 }
 
 int main() {
-  std::cout << "[part1] test solution 1: " << part1("input10_1.txt") << "\n";
-  std::cout << "[part1] test solution 2: " << part1("input10_2.txt") << "\n";
-  std::cout << "[part1] solution: " << part1("input10_3.txt") << "\n";
-  std::cout << "[part2] test solution 1: " << part2("input10_1.txt") << "\n";
-  std::cout << "[part2] test solution 2: " << part2("input10_2.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input10_3.txt") << "\n";
+  std::cout << "[part1] test solution 1: " << part1("input/input10_1.txt") << "\n";
+  std::cout << "[part1] test solution 2: " << part1("input/input10_2.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input10_3.txt") << "\n";
+  std::cout << "[part2] test solution 1: " << part2("input/input10_1.txt") << "\n";
+  std::cout << "[part2] test solution 2: " << part2("input/input10_2.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input10_3.txt") << "\n";
   return 0;
 }

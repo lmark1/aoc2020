@@ -66,22 +66,22 @@ ll_t part1(const std::string &input, ll_t max_turn) {
 
 // clang-format off
 int main() {
-  std::cout << "[part1] test solution 1: " << part1("input15_1.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 2: " << part1("input15_2.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 3: " << part1("input15_3.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 4: " << part1("input15_4.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 5: " << part1("input15_5.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 6: " << part1("input15_6.txt", 2020) << "\n";
-  std::cout << "[part1] test solution 7: " << part1("input15_7.txt", 2020) << "\n";
-  std::cout << "[part1] solution: " << part1("input15_8.txt", 2020) << "\n\n";
+  std::cout << "[part1] test solution 1: " << part1("input/input15_1.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 2: " << part1("input/input15_2.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 3: " << part1("input/input15_3.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 4: " << part1("input/input15_4.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 5: " << part1("input/input15_5.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 6: " << part1("input/input15_6.txt", 2020) << "\n";
+  std::cout << "[part1] test solution 7: " << part1("input/input15_7.txt", 2020) << "\n";
+  std::cout << "[part1] solution: " << part1("input/input15_8.txt", 2020) << "\n\n";
 
-  std::cout << "[part2] test solution 1: " << part1("input15_1.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 2: " << part1("input15_2.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 3: " << part1("input15_3.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 4: " << part1("input15_4.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 5: " << part1("input15_5.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 6: " << part1("input15_6.txt", 30000000) << "\n";
-  std::cout << "[part2] test solution 7: " << part1("input15_7.txt", 30000000) << "\n";
-  std::cout << "[part2] solution: " << part1("input15_8.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 1: " << part1("input/input15_1.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 2: " << part1("input/input15_2.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 3: " << part1("input/input15_3.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 4: " << part1("input/input15_4.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 5: " << part1("input/input15_5.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 6: " << part1("input/input15_6.txt", 30000000) << "\n";
+  std::cout << "[part2] test solution 7: " << part1("input/input15_7.txt", 30000000) << "\n";
+  std::cout << "[part2] solution: " << part1("input/input15_8.txt", 30000000) << "\n";
   return 0;
 }

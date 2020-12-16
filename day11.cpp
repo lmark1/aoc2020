@@ -140,9 +140,9 @@ int part2(const std::string &input) {
 }
 
 int main() {
-  std::cout << "[part1] test solution: " << part1("input11_1.txt") << "\n";
-  std::cout << "[part1] solution: " << part1("input11_2.txt") << "\n";
-  std::cout << "[part2] test solution: " << part2("input11_1.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input11_2.txt") << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input11_1.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input11_2.txt") << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input11_1.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input11_2.txt") << "\n";
   return 0;
 }

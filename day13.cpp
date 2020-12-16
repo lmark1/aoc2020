@@ -173,14 +173,14 @@ long long part2(const std::string &input) {
 }
 
 int main() {
-  std::cout << "[part1] test solution: " << part1("input13_1.txt") << "\n";
-  std::cout << "[part1] test solution: " << part1("input13_2.txt") << "\n";
-  std::cout << "[part2] test solution: " << part2("input13_1.txt") << "\n";
-  std::cout << "[part2] test solution 1: " << part2("input13_3.txt") << "\n";
-  std::cout << "[part2] test solution 2: " << part2("input13_4.txt") << "\n";
-  std::cout << "[part2] test solution 3: " << part2("input13_5.txt") << "\n";
-  std::cout << "[part2] test solution 4: " << part2("input13_6.txt") << "\n";
-  std::cout << "[part2] test solution 5: " << part2("input13_7.txt") << "\n";
-  std::cout << "[part2] solution: " << part2("input13_2.txt") << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input13_1.txt") << "\n";
+  std::cout << "[part1] test solution: " << part1("input/input13_2.txt") << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input13_1.txt") << "\n";
+  std::cout << "[part2] test solution 1: " << part2("input/input13_3.txt") << "\n";
+  std::cout << "[part2] test solution 2: " << part2("input/input13_4.txt") << "\n";
+  std::cout << "[part2] test solution 3: " << part2("input/input13_5.txt") << "\n";
+  std::cout << "[part2] test solution 4: " << part2("input/input13_6.txt") << "\n";
+  std::cout << "[part2] test solution 5: " << part2("input/input13_7.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input13_2.txt") << "\n";
   return 0;
 }
