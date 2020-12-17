@@ -4,25 +4,40 @@
 #include <unordered_map>
 
 using pos_t = std::tuple<long long, long long, long long>;
+using hyper_pos_t = std::tuple<long long, long long, long long, long long>;
+
 struct pos_hash : public std::unary_function<pos_t, std::size_t> {
   std::size_t operator()(const pos_t &key) const {
     return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key);
   }
 };
+struct hyper_pos_hash : public std::unary_function<hyper_pos_t, std::size_t> {
+  std::size_t operator()(const hyper_pos_t &key) const {
+    return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key) ^
+           std::get<3>(key);
+  }
+};
 using galaxy_map_t = std::unordered_map<pos_t, char, pos_hash>;
+using hyper_map_t = std::unordered_map<hyper_pos_t, char, hyper_pos_hash>;
 
-galaxy_map_t get_galaxy_map(const std::string &input) {
+template <typename Map> Map get_map(const std::string &input) {
   const auto lines = aoc_util::get_lines(input);
   const auto matrix = aoc_util::get_matrix(lines);
   const auto HEIGHT = lines.size();
   const auto WIDTH = lines.front().size();
-  galaxy_map_t galaxy_map;
-  for (auto i = 0; i < HEIGHT; i++) {
-    for (auto j = 0; j < WIDTH; j++) {
-      galaxy_map.emplace(std::make_tuple(i, j, 0), matrix[i][j]);
+  Map map;
+  for (std::size_t i = 0; i < HEIGHT; i++) {
+    for (std::size_t j = 0; j < WIDTH; j++) {
+
+      constexpr auto key_size = std::tuple_size<typename Map::key_type>();
+      if constexpr (key_size == 3) {
+        map.emplace(std::make_tuple(i, j, 0), matrix[i][j]);
+      } else if constexpr (key_size == 4) {
+        map.emplace(std::make_tuple(i, j, 0, 0), matrix[i][j]);
+      }
     }
   }
-  return galaxy_map;
+  return map;
 }
 
 std::vector<pos_t> get_adjacent_positions(const pos_t &init_pos) {
@@ -42,8 +57,38 @@ std::vector<pos_t> get_adjacent_positions(const pos_t &init_pos) {
   return adjacent_pos;
 }
 
-int active_neighbour_count(const galaxy_map_t &gmap, const pos_t &pos) {
-  auto adjacent_positions = get_adjacent_positions(pos);
+std::vector<hyper_pos_t>
+get_adjacent_hyperpositions(const hyper_pos_t &init_pos) {
+  std::vector<hyper_pos_t> adjacent_hyperpos;
+  for (auto i = -1; i < 2; i++) {
+    for (auto j = -1; j < 2; j++) {
+      for (auto k = -1; k < 2; k++) {
+        for (auto l = -1; l < 2; l++) {
+          if (i == 0 && j == 0 && k == 0 && l == 0) {
+            continue;
+          }
+          adjacent_hyperpos.emplace_back(
+              std::get<0>(init_pos) + i, std::get<1>(init_pos) + j,
+              std::get<2>(init_pos) + k, std::get<3>(init_pos) + l);
+        }
+      }
+    }
+  }
+  return adjacent_hyperpos;
+}
+
+template <typename Tuple>
+std::vector<Tuple> get_adjacent(const Tuple &init_pos) {
+  if constexpr (std::tuple_size<Tuple>::value == 3) {
+    return get_adjacent_positions(init_pos);
+  } else if constexpr (std::tuple_size<Tuple>::value == 4) {
+    return get_adjacent_hyperpositions(init_pos);
+  }
+}
+
+template <typename Map, typename Key>
+int active_neighbour_count(const Map &gmap,
+                           const std::vector<Key> &adjacent_positions) {
   int active_neighbours = 0;
   for (const auto &adj_pos : adjacent_positions) {
     if (!gmap.contains(adj_pos)) {
@@ -64,9 +109,11 @@ struct bounds {
   long long MAX_Y = -1e9;
   long long MIN_Z = 1e9;
   long long MAX_Z = -1e9;
+  long long MIN_W = 1e9;
+  long long MAX_W = -1e9;
 };
 
-void update_bounds(bounds &b, const pos_t &pos) {
+template <typename Tuple> void update_bounds(bounds &b, const Tuple &pos) {
   auto x = std::get<0>(pos);
   auto y = std::get<1>(pos);
   auto z = std::get<2>(pos);
@@ -88,41 +135,23 @@ void update_bounds(bounds &b, const pos_t &pos) {
   } else if (z > b.MAX_Z) {
     b.MAX_Z = z;
   }
-}
 
-void pretty_print(const galaxy_map_t &gmap, const bounds &b) {
-  using matrix3d = std::vector<aoc_util::matrix<char>>;
-  matrix3d m(b.MAX_Z - b.MIN_Z + 1,
-             aoc_util::matrix<char>(b.MAX_X - b.MIN_X + 1,
-                                    std::vector<char>(b.MAX_Y - b.MIN_Y + 1, '.')));
-  for (const auto &it : gmap) {
-    auto x = std::get<0>(it.first);
-    auto y = std::get<1>(it.first);
-    auto z = std::get<2>(it.first);
-    m[llabs(b.MIN_Z) + z][llabs(b.MIN_X) + x][llabs(b.MIN_Y) + y] = it.second;
-  }
-
-  for (auto k = 0; k < m.size(); k++) {
-    std::cout << "Layer: " << k + b.MIN_Z << "\n";
-    for (auto i = 0; i < m.front().size(); i++) {
-      for (auto j = 0; j < m.front().front().size(); j++) {
-        std::cout << m[k][i][j];
-      }
-      std::cout << "\n";
+  if constexpr (std::tuple_size<Tuple>::value > 3) {
+    auto w = std::get<3>(pos);
+    if (w < b.MIN_W) {
+      b.MIN_W = w;
+    } else if (w > b.MAX_W) {
+      b.MAX_W = w;
     }
-    std::cout << "\n";
   }
-
-  std::cout << "//////////////////////////////////////////////\n";
 }
 
-long long part1(const std::string &input) {
-  auto galaxy_map = get_galaxy_map(input);
+template <typename Map> long long solution(const std::string &input) {
+  auto galaxy_map = get_map<Map>(input);
 
   int cycle_count = 0;
   while (cycle_count < 6) {
-    galaxy_map_t new_map(galaxy_map.begin(), galaxy_map.end());
-
+    Map new_map(galaxy_map.begin(), galaxy_map.end());
     bounds b;
     for (const auto &it : new_map) {
 
@@ -130,7 +159,7 @@ long long part1(const std::string &input) {
       if (it.second == '.') {
         continue;
       }
-      auto nearby = get_adjacent_positions(it.first);
+      auto nearby = get_adjacent(it.first);
       for (const auto &pos : nearby) {
         galaxy_map.emplace(pos, '.');
         update_bounds(b, pos);
@@ -139,8 +168,9 @@ long long part1(const std::string &input) {
     new_map = galaxy_map;
 
     for (const auto &item : galaxy_map) {
-
-      auto active_neighbours = active_neighbour_count(galaxy_map, item.first);
+      auto adjacent_positions = get_adjacent(item.first);
+      auto active_neighbours =
+          active_neighbour_count(galaxy_map, adjacent_positions);
       auto curr_cube = item.second;
       if (curr_cube == '#' &&
           !(active_neighbours == 2 || active_neighbours == 3)) {
@@ -152,7 +182,6 @@ long long part1(const std::string &input) {
         new_map[item.first] = '#';
         continue;
       }
-
     }
 
     galaxy_map = std::move(new_map);
@@ -166,9 +195,19 @@ long long part1(const std::string &input) {
                          });
 }
 
+long long part1(const std::string &input) {
+  return solution<galaxy_map_t>(input);
+}
+
+long long part2(const std::string &input) {
+  return solution<hyper_map_t>(input);
+}
+
 // clang-format off
 int main() {
   std::cout << "[part1] test solution: " << part1("input/input17_1.txt") << "\n";
-  std::cout << "[part1] test solution: " << part1("input/input17_2.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input17_2.txt") << "\n";
+  std::cout << "[part2] test solution: " << part2("input/input17_1.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input17_2.txt") << "\n";
   return 0;
 }
