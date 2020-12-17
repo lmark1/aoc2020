@@ -1,24 +1,29 @@
 #include "util.hpp"
 #include <cmath>
 #include <numeric>
+#include <type_traits>
 #include <unordered_map>
 
 using pos_t = std::tuple<long long, long long, long long>;
 using hyper_pos_t = std::tuple<long long, long long, long long, long long>;
 
-struct pos_hash : public std::unary_function<pos_t, std::size_t> {
-  std::size_t operator()(const pos_t &key) const {
-    return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key);
+template <typename Key>
+struct key_hash : public std::unary_function<Key, std::size_t> {
+  std::size_t operator()(const Key &key) const {
+    if constexpr (std::tuple_size<Key>() == 3) {
+      return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key);
+    } else if constexpr (std::tuple_size<Key>() == 4) {
+      return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key) ^
+             std::get<3>(key);
+    }
   }
 };
-struct hyper_pos_hash : public std::unary_function<hyper_pos_t, std::size_t> {
-  std::size_t operator()(const hyper_pos_t &key) const {
-    return std::get<0>(key) ^ std::get<1>(key) ^ std::get<2>(key) ^
-           std::get<3>(key);
-  }
-};
-using galaxy_map_t = std::unordered_map<pos_t, char, pos_hash>;
-using hyper_map_t = std::unordered_map<hyper_pos_t, char, hyper_pos_hash>;
+
+using galaxy_map_t = std::unordered_map<pos_t, char, key_hash<pos_t>>;
+using hyper_map_t = std::unordered_map<hyper_pos_t, char, key_hash<hyper_pos_t>>;
+
+template <typename Key>
+using adj_map_t = std::unordered_map<Key, std::vector<Key>, key_hash<Key>>;
 
 template <typename Map> Map get_map(const std::string &input) {
   const auto lines = aoc_util::get_lines(input);
@@ -102,75 +107,41 @@ int active_neighbour_count(const Map &gmap,
   return active_neighbours;
 }
 
-struct bounds {
-  long long MIN_X = 1e9;
-  long long MAX_X = -1e9;
-  long long MIN_Y = 1e9;
-  long long MAX_Y = -1e9;
-  long long MIN_Z = 1e9;
-  long long MAX_Z = -1e9;
-  long long MIN_W = 1e9;
-  long long MAX_W = -1e9;
-};
-
-template <typename Tuple> void update_bounds(bounds &b, const Tuple &pos) {
-  auto x = std::get<0>(pos);
-  auto y = std::get<1>(pos);
-  auto z = std::get<2>(pos);
-
-  if (x < b.MIN_X) {
-    b.MIN_X = x;
-  } else if (x > b.MAX_X) {
-    b.MAX_X = x;
-  }
-
-  if (y < b.MIN_Y) {
-    b.MIN_Y = y;
-  } else if (y > b.MAX_Y) {
-    b.MAX_Y = y;
-  }
-
-  if (z < b.MIN_Z) {
-    b.MIN_Z = z;
-  } else if (z > b.MAX_Z) {
-    b.MAX_Z = z;
-  }
-
-  if constexpr (std::tuple_size<Tuple>::value > 3) {
-    auto w = std::get<3>(pos);
-    if (w < b.MIN_W) {
-      b.MIN_W = w;
-    } else if (w > b.MAX_W) {
-      b.MAX_W = w;
-    }
-  }
-}
-
 template <typename Map> long long solution(const std::string &input) {
   auto galaxy_map = get_map<Map>(input);
+  adj_map_t<typename Map::key_type> adj_map;
+
+  const auto get_adjacent_cached = [&](const auto &key) {
+    if (!adj_map.contains(key)) {
+      auto nearby = get_adjacent(key);
+      adj_map.emplace(key, nearby);
+    }
+    return adj_map[key];
+  };
 
   int cycle_count = 0;
   while (cycle_count < 6) {
-    Map new_map(galaxy_map.begin(), galaxy_map.end());
-    bounds b;
-    for (const auto &it : new_map) {
 
-      update_bounds(b, it.first);
+      std::cout << "Count: " << cycle_count << "\n";
+
+    Map new_map(galaxy_map.begin(), galaxy_map.end());
+    for (const auto &it : new_map) {
       if (it.second == '.') {
         continue;
       }
-      auto nearby = get_adjacent(it.first);
+
+      auto nearby = get_adjacent_cached(it.first);
       for (const auto &pos : nearby) {
         galaxy_map.emplace(pos, '.');
-        update_bounds(b, pos);
       }
     }
     new_map = galaxy_map;
 
     for (const auto &item : galaxy_map) {
-      auto adjacent_positions = get_adjacent(item.first);
+      auto adjacent_positions = get_adjacent_cached(item.first);
       auto active_neighbours =
           active_neighbour_count(galaxy_map, adjacent_positions);
+
       auto curr_cube = item.second;
       if (curr_cube == '#' &&
           !(active_neighbours == 2 || active_neighbours == 3)) {
