@@ -51,78 +51,43 @@ res result(const std::string &line, std::size_t pos) {
   return {sum, line.size()};
 }
 
-struct operation
-{
-  long long lhs;
-  long long rhs;
-  char op;
-
-  std::shared_ptr<operation> left_node;
-  std::shared_ptr<operation> right_node;
-};
-
 long long result_p2(std::string line, std::size_t pos) {
-  long long sum = 0;
-  
   line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
-  std::cout << "\n" << line << "\n";
-  std::vector<std::string> split;
-  boost::split(split, line, boost::is_any_of("()*"));
-  std::vector<std::string> sol;
-  for(auto& el : split) {
+  line.insert(0, "(");
+  line.insert(line.size(), ")");
+  while (!line.empty()) { 
+    auto start = line.rfind("(");
+    auto end = line.find_first_of(")", start);
     
-    std::cout << el << " / ";
-
-    if (el.empty() || el == "+") {
-      sol.push_back(el);
-      continue;
+    if (start > line.size() && end > line.size()) {
+      break;
     }
 
-    long long sum = 0;
-    std::vector<std::string> adds;
-    boost::split(adds, el, boost::is_any_of("+"));
-    bool summed = false;
-    for (const auto& num : adds) {
-      if (num.empty()) {
-        continue;
+    std::string middle = line.substr(start + 1, end - start - 1);
+    std::vector<std::string> split_mul;
+    boost::split(split_mul, middle, boost::is_any_of("*"));
+    long long mul = 1;
+    for (auto& el : split_mul) {
+      std::vector<std::string> split_add;
+      boost::split(split_add, el, boost::is_any_of("+"));
+      long long sum = 0;
+      for(auto& sel : split_add) {
+        sum += std::stoll(sel);
       }
-      summed = true;
-      sum += std::stoll(num);
+      mul *= sum;
     }
-
-    if (adds.front().empty()) {
-      sol.emplace_back("+");
-    }
-
-    if (summed) {
-      sol.push_back(std::to_string(sum));
-    }
-
-    if (adds.back().empty()) {
-      sol.emplace_back("+");
-    }
+    
+    line.erase(start, end - start + 1);
+    line.insert(start, std::to_string(mul));
   }
-
-  std::cout << "\n";
-  long long mul = 1LL;
-  for (const auto& el: sol) {
-    std::cout << el << " / ";
-    if (el.empty()) {
-      continue;
-    }
-
-    //mul *= std::stoll(el);
-  }
-  return mul;
+  return std::stoll(line);
 }
 
 long long part1(const std::string &input) {
   const auto lines = aoc_util::get_lines(input);
   long long sum = 0;
-  //std::cout << "\n";
   for (const auto &line : lines) {
     auto res = result(line, 0);
-    //std::cout << "Line: " << line << " = " << res.val << "\n";
     sum += res.val;
   }
   return sum;
@@ -139,19 +104,19 @@ long long part2(const std::string &input) {
 
 // clang-format off
 int main() {
-  // std::cout << "[part1] test solution 1: " << part1("input/input18_1.txt") << "\n";
-  // std::cout << "[part1] test solution 2: " << part1("input/input18_2.txt") << "\n";
-  // std::cout << "[part1] test solution 3: " << part1("input/input18_3.txt") << "\n";
-  // std::cout << "[part1] test solution 4: " << part1("input/input18_4.txt") << "\n";
-  // std::cout << "[part1] test solution 5: " << part1("input/input18_5.txt") << "\n";
-  // std::cout << "[part1] test solution 6: " << part1("input/input18_6.txt") << "\n";
-  // std::cout << "[part1] solution: " << part1("input/input18_7.txt") << "\n";
+  std::cout << "[part1] test solution 1: " << part1("input/input18_1.txt") << "\n";
+  std::cout << "[part1] test solution 2: " << part1("input/input18_2.txt") << "\n";
+  std::cout << "[part1] test solution 3: " << part1("input/input18_3.txt") << "\n";
+  std::cout << "[part1] test solution 4: " << part1("input/input18_4.txt") << "\n";
+  std::cout << "[part1] test solution 5: " << part1("input/input18_5.txt") << "\n";
+  std::cout << "[part1] test solution 6: " << part1("input/input18_6.txt") << "\n";
+  std::cout << "[part1] solution: " << part1("input/input18_7.txt") << "\n";
   std::cout << "[part2] test solution 1: " << part2("input/input18_1.txt") << "\n";
   std::cout << "[part2] test solution 2: " << part2("input/input18_2.txt") << "\n";
   std::cout << "[part2] test solution 3: " << part2("input/input18_3.txt") << "\n";
   std::cout << "[part2] test solution 4: " << part2("input/input18_4.txt") << "\n";
   std::cout << "[part2] test solution 5: " << part2("input/input18_5.txt") << "\n";
   std::cout << "[part2] test solution 6: " << part2("input/input18_6.txt") << "\n";
-  // std::cout << "[part2] solution: " << part2("input/input18_7.txt") << "\n";
+  std::cout << "[part2] solution: " << part2("input/input18_7.txt") << "\n";
   return 0;
 }
