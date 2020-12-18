@@ -20,7 +20,8 @@ struct key_hash : public std::unary_function<Key, std::size_t> {
 };
 
 using galaxy_map_t = std::unordered_map<pos_t, char, key_hash<pos_t>>;
-using hyper_map_t = std::unordered_map<hyper_pos_t, char, key_hash<hyper_pos_t>>;
+using hyper_map_t =
+    std::unordered_map<hyper_pos_t, char, key_hash<hyper_pos_t>>;
 
 template <typename Key>
 using adj_map_t = std::unordered_map<Key, std::vector<Key>, key_hash<Key>>;
@@ -121,9 +122,6 @@ template <typename Map> long long solution(const std::string &input) {
 
   int cycle_count = 0;
   while (cycle_count < 6) {
-
-      std::cout << "Count: " << cycle_count << "\n";
-
     Map new_map(galaxy_map.begin(), galaxy_map.end());
     for (const auto &it : new_map) {
       if (it.second == '.') {
@@ -155,7 +153,10 @@ template <typename Map> long long solution(const std::string &input) {
       }
     }
 
-    galaxy_map = std::move(new_map);
+    galaxy_map.clear();
+    std::copy_if(new_map.begin(), new_map.end(),
+                 std::inserter(galaxy_map, galaxy_map.begin()),
+                 [&](const auto &it) { return it.second == '#'; });
     cycle_count++;
   }
 
