@@ -2,5 +2,5 @@
 
 C++ solutions compiled with:
 ```
--std=C++2a 
+g++-9 dayXY.cpp -std=c++2a -O3 
 ```
