@@ -135,6 +135,7 @@ template <typename Map> long long solution(const std::string &input) {
     }
     new_map = galaxy_map;
 
+    Map only_hashes;
     for (const auto &item : galaxy_map) {
       auto adjacent_positions = get_adjacent_cached(item.first);
       auto active_neighbours =
@@ -149,14 +150,16 @@ template <typename Map> long long solution(const std::string &input) {
 
       if (curr_cube == '.' && active_neighbours == 3) {
         new_map[item.first] = '#';
+        only_hashes.emplace(item.first, '#');
         continue;
+      }
+
+      if (curr_cube == '#') {
+        only_hashes.emplace(item.first, '#');
       }
     }
 
-    galaxy_map.clear();
-    std::copy_if(new_map.begin(), new_map.end(),
-                 std::inserter(galaxy_map, galaxy_map.begin()),
-                 [&](const auto &it) { return it.second == '#'; });
+    galaxy_map = std::move(only_hashes);
     cycle_count++;
   }
 
