@@ -6,32 +6,28 @@
 #include <istream>
 #include <sstream>
 #include <string>
-#include <vector>
 #include <thread>
+#include <vector>
 
 namespace aoc_util {
 
-template<typename T>
-void sleep(T time)
-{
-  std::this_thread::sleep_for(time);
-}
+template <typename T> void sleep(T time) { std::this_thread::sleep_for(time); }
 
-void ClearScreen()
-{
-  std::cout << std::string( 100, '\n' );
-}
-
+void ClearScreen() { std::cout << std::string(100, '\n'); }
 
 const auto get_long = [](const auto &el) { return std::stol(el); };
 const auto get_llong = [](const auto &el) { return std::stol(el); };
 const auto get_int = [](const auto &el) { return std::stoi(el); };
 
-template<typename T>
-using matrix = std::vector<std::vector<T>>;
+template <typename T> using matrix = std::vector<std::vector<T>>;
 
-matrix<char> get_matrix(const std::vector<std::string>& lines)
-{
+template <typename Container>
+void pprint(const Container &c, const std::string sep = " ") {
+  std::for_each(std::begin(c), std::end(c),
+                [&](const auto &el) { std::cout << el << sep; });
+}
+
+matrix<char> get_matrix(const std::vector<std::string> &lines) {
   matrix<char> m;
   for (std::size_t i = 0; i < lines.size(); i++) {
     auto line = lines.at(i);

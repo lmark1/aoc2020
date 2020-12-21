@@ -69,7 +69,10 @@
     "sstream": "cpp",
     "thread": "cpp",
     "__string": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "strstream": "cpp",
+    "complex": "cpp",
+    "typeindex": "cpp"
   },
 
   "clang-tidy.compilerArgs": [
